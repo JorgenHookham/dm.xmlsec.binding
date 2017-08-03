@@ -11,7 +11,7 @@ else: have_cython = True
 
 # get the goods
 # fancy_var = environ.get("XMLSEC_CONFIG")
-fancy_var = '--base /app/.apt/usr'
+fancy_var = '--prefix=/app/.apt/usr'
 print "we are spinning the meat now"
 print fancy_var
 
@@ -103,19 +103,21 @@ if libxml2_libs[:2] not in ["-l", "-L"]:
 
 crypto_engine = environ.get("XMLSEC_CRYPTO_ENGINE")
 if crypto_engine is None:
-  crypto_engine = commands.getoutput("xmlsec1-config --crypto --base /app/.apt/usr")
+  crypto_engine = commands.getoutput("xmlsec1-config --crypto --prefix=/app/.apt/usr")
   if not crypto_engine:
     sys.exit("Error: cannot get XMLSec1 crypto engine")
 else:
   assert crypto_engine in ("openssl", "gnutls", "nss")
 crypto_engine = " --crypto=" + crypto_engine
-print "xmlsec1-config --cflags --base /app/.apt/usr" + crypto_engine
-xmlsec1_cflags = commands.getoutput("xmlsec1-config --cflags --base /app/.apt/usr" + crypto_engine)
+print "xmlsec1-config --cflags --prefix=/app/.apt/usr" + crypto_engine
+xmlsec1_cflags = commands.getoutput("xmlsec1-config --cflags --prefix=/app/.apt/usr" + crypto_engine)
+print xmlsec1_cflags
 if xmlsec1_cflags[:2] not in ["-I", "-D"]:
     sys.exit("Error: cannot get XMLSec1 pre-processor and compiler flags; do you have the `libxmlsec1` development package installed?")
 
-print "xmlsec1-config --libs --base /app/.apt/usr" + crypto_engine
-xmlsec1_libs = commands.getoutput("xmlsec1-config --libs --base /app/.apt/usr" + crypto_engine)
+print "xmlsec1-config --libs --prefix=/app/.apt/usr" + crypto_engine
+xmlsec1_libs = commands.getoutput("xmlsec1-config --libs --prefix=/app/.apt/usr" + crypto_engine)
+print xmlsec1_libs
 if xmlsec1_libs[:2] not in ["-l", "-L"]:
     sys.exit("Error : cannot get XMLSec1 linker flags; do you have the `libxmlsec1` development package installed?")
 
