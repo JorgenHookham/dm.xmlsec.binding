@@ -109,10 +109,12 @@ if crypto_engine is None:
 else:
   assert crypto_engine in ("openssl", "gnutls", "nss")
 crypto_engine = " --crypto=" + crypto_engine
+print "xmlsec1-config --cflags --base /app/.apt/usr" + crypto_engine
 xmlsec1_cflags = commands.getoutput("xmlsec1-config --cflags --base /app/.apt/usr" + crypto_engine)
 if xmlsec1_cflags[:2] not in ["-I", "-D"]:
     sys.exit("Error: cannot get XMLSec1 pre-processor and compiler flags; do you have the `libxmlsec1` development package installed?")
 
+print "xmlsec1-config --libs --base /app/.apt/usr" + crypto_engine
 xmlsec1_libs = commands.getoutput("xmlsec1-config --libs --base /app/.apt/usr" + crypto_engine)
 if xmlsec1_libs[:2] not in ["-l", "-L"]:
     sys.exit("Error : cannot get XMLSec1 linker flags; do you have the `libxmlsec1` development package installed?")
